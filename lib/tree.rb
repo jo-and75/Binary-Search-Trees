@@ -80,12 +80,12 @@ class Tree
       current_node = current_node.left if value < current_node.data
     end 
     puts current_node
-  end
+  end 
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
-test.pretty_print
-test.find(8)
+# test.pretty_print
+test.find(7)
 
 # test.insert(test.root, 10)
 # test.delete(test.root, 5)
