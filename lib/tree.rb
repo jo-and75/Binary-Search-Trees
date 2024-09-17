@@ -1,6 +1,8 @@
 require_relative 'node' 
 
-class Tree 
+class Tree  
+  attr_accessor :root_node, :root
+
   def initialize(entry)
     @arr = entry.uniq
     @root = build_tree(@arr)
@@ -33,4 +35,9 @@ class Tree
     end
       return root
   end
-end
+end 
+
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
+# test.pretty_print
+test.insert(test.root, 10)
+test.pretty_print
