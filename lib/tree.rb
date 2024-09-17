@@ -34,10 +34,32 @@ class Tree
       root.right = insert(root.right, value)
     end
     root
+  end 
+
+  def delete(root, value)  
+    
+    temp_root = root   
+    until temp_root.data == value
+      if value > temp_root.data   
+        temp_root_1 = temp_root
+        temp_root = temp_root.right 
+      elsif value < temp_root.data  
+        temp_root_1 = temp_root
+        temp_root = temp_root.left 
+      end 
+    end 
+     
+    if temp_root.data > temp_root_1.data
+      temp_root_1.right = nil 
+    else 
+      temp_root_1.left = nil 
+    end
+  #  puts temp_root.data
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
 # test.pretty_print
-test.insert(test.root, 10)
+test.insert(test.root, 10) 
+test.delete(test.root,1)
 test.pretty_print
