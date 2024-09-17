@@ -36,30 +36,49 @@ class Tree
     root
   end 
 
-  def delete(root, value)  
+  def delete(root, value)
+    parent, node = nil, root
     
-    temp_root = root   
-    until temp_root.data == value
-      if value > temp_root.data   
-        temp_root_1 = temp_root
-        temp_root = temp_root.right 
-      elsif value < temp_root.data  
-        temp_root_1 = temp_root
-        temp_root = temp_root.left 
-      end 
-    end 
-     
-    if temp_root.data > temp_root_1.data
-      temp_root_1.right = nil 
-    else 
-      temp_root_1.left = nil 
+    while node && node.data != value  #the node in node && node.data necessary to exit iteration incase value isnt in tree.
+      parent = node
+      node = value > node.data ? node.right : node.left
     end
-  #  puts temp_root.data
+    return unless node
+
+    if node.left.nil? && node.right.nil?
+      parent.left == node ? parent.left = nil : parent.right = nil
+  
+    elsif node.left.nil? || node.right.nil?
+      child = node.left || node.right
+      parent.left == node ? parent.left = child : parent.right = child
+  
+    else    
+      temp_node = node.right    
+      until temp_node.right.nil? && temp_node.left.nil? do
+        if !temp_node.left.nil?  
+          parent = temp_node
+          temp_node = temp_node.left 
+        else  
+          parent = temp_node
+          temp_node = temp_node.right 
+        end  
+      end
+      
+    node.data = temp_node.data
+      if temp_node.data > parent.data
+        parent.right = nil 
+      else 
+        parent.left = nil 
+      end
+    end
+    root
   end
+  
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
 # test.pretty_print
-test.insert(test.root, 10) 
-test.delete(test.root,1)
-test.pretty_print
+# test.insert(test.root, 10)
+test.delete(test.root, 7)
+test.pretty_print 
+# puts test.root.right.data.min
