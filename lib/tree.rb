@@ -80,12 +80,24 @@ class Tree
       current_node = current_node.left if value < current_node.data
     end 
     puts current_node
-  end 
+  end  
+
+  def level_order(node = @root, queue = [])    
+    queue.push(node)  
+    (@arr.length - 1).times do 
+      queue.push(queue[0].left) unless queue[0].left.nil?   
+      queue.push(queue[0].right) unless queue[0].right.nil?  
+      queue.shift 
+      puts queue[0].data
+    end 
+   
+  end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
-# test.pretty_print
-test.find(7)
+# test.pretty_print 
+test.level_order
+# test.find(7)
 
 # test.insert(test.root, 10)
 # test.delete(test.root, 5)
