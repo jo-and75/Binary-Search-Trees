@@ -118,8 +118,20 @@ class Tree
     end
     inorder(node.right, &block)
   end
+
+  def postorder(node = @root, &block)
+    return if node.nil?
+
+    postorder(node.left, &block) 
+    postorder(node.right, &block)  
+    if block_given? 
+      yield(node) 
+    else 
+      puts node.data 
+    end
+  end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
 test.pretty_print
-test.inorder { |elem| puts elem.data * 10 }
+test.postorder { |elem| puts elem.data * 10 }
