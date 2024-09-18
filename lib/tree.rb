@@ -95,35 +95,31 @@ class Tree
     end
   end
 
-  def preorder(node = @root, &block)  
-    return if node.nil?   
-    
+  def preorder(node = @root, &block)
+    return if node.nil?
+
     if block_given?
-      yield(node) 
-     else 
-       puts node.data 
-     end
-    preorder(node.left,&block) 
-    preorder(node.right,&block)   
-    
-  end 
-
-  def inorder(node = @root, &block)    
-    return if node.nil? 
-
-  
-    inorder(node.left, &block)     
-    if block_given? 
-      yield(node) 
+      yield(node)
     else
-     puts node.data 
+      puts node.data
     end
-    inorder(node.right, &block) 
-    
+    preorder(node.left, &block)
+    preorder(node.right, &block)
+  end
 
+  def inorder(node = @root, &block)
+    return if node.nil?
+
+    inorder(node.left, &block)
+    if block_given?
+      yield(node)
+    else
+      puts node.data
+    end
+    inorder(node.right, &block)
   end
 end
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
 test.pretty_print
-test.inorder {|elem| puts elem.data * 10}
+test.inorder { |elem| puts elem.data * 10 }
