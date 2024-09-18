@@ -1,7 +1,7 @@
 require_relative 'node'
 
 class Tree
-  attr_accessor :root_node, :root
+  attr_accessor :root_node, :root, :arr
 
   def initialize(entry)
     @arr = entry.uniq
@@ -65,43 +65,58 @@ class Tree
         end
       end
 
-      node.data = temp_node.data 
+      node.data = temp_node.data
       parent.right = nil if temp_node.data > parent.data
       parent.left = nil unless temp_node.data > parent.data
     end
     root
-  end 
+  end
 
-  def find(value,node = @root)  
-    current_node = node 
-    return nil if current_node.nil?  
+  def find(value, node = @root)
+    current_node = node
+    return nil if current_node.nil?
+
     until current_node.data == value
       current_node = current_node.right if value > current_node.data
       current_node = current_node.left if value < current_node.data
-    end 
+    end
     puts current_node
-  end  
+  end
 
-  def level_order(node = @root, queue = [])    
-    queue.push(node)  
-    (@arr.length).times do 
-      queue.push(queue[0].left) unless queue[0].left.nil?   
-      queue.push(queue[0].right) unless queue[0].right.nil?   
-      if block_given?
-        yield(queue[0])  
-      end
-      queue.shift 
-    end 
+  def level_order(node = @root, queue = [])
+    queue.push(node)
+    loop do
+      break if queue.length == 0
+
+      queue.push(queue[0].left) unless queue[0].left.nil?
+      queue.push(queue[0].right) unless queue[0].right.nil?
+      yield(queue[0]) if block_given?
+      queue.shift
+    end
+  end
+
+  def preorder(node = @root, &block)  
+    return if node.nil?   
+    
+    if block_given?
+      yield(node) 
+     else 
+       puts node.data 
+     end
+    preorder(node.left,&block) 
+    preorder(node.right,&block)   
+    
   end
 end
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
-# test.pretty_print 
-test.level_order #{ |elem| puts elem.data + 1}
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
+test.preorder {|elem| puts "Node value: #{elem.data + 10}" }
+
+# test.level_order { |elem| puts elem.data}
 # test.find(7)
 
 # test.insert(test.root, 10)
-# test.delete(test.root, 5)
+
+# p test.arr.length
 # test.pretty_print
 # puts test.root.right.data.min
-
