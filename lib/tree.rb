@@ -84,19 +84,20 @@ class Tree
 
   def level_order(node = @root, queue = [])    
     queue.push(node)  
-    (@arr.length - 1).times do 
+    (@arr.length).times do 
       queue.push(queue[0].left) unless queue[0].left.nil?   
-      queue.push(queue[0].right) unless queue[0].right.nil?  
+      queue.push(queue[0].right) unless queue[0].right.nil?   
+      if block_given?
+        yield(queue[0])  
+      end
       queue.shift 
-      puts queue[0].data
     end 
-   
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
 # test.pretty_print 
-test.level_order
+test.level_order #{ |elem| puts elem.data + 1}
 # test.find(7)
 
 # test.insert(test.root, 10)
