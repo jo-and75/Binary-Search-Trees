@@ -108,14 +108,22 @@ class Tree
     
   end 
 
-  def inorder(node = @root)   
-    return if node.nil?
-    inorder(node.left)    
-    puts node.data
-    inorder(node.right)
+  def inorder(node = @root, &block)    
+    return if node.nil? 
+
+  
+    inorder(node.left, &block)     
+    if block_given? 
+      yield(node) 
+    else
+     puts node.data 
+    end
+    inorder(node.right, &block) 
+    
+
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
-# test.pretty_print
-test.inorder
+test.pretty_print
+test.inorder {|elem| puts elem.data * 10}
