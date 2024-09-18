@@ -106,17 +106,16 @@ class Tree
     preorder(node.left,&block) 
     preorder(node.right,&block)   
     
+  end 
+
+  def inorder(node = @root)   
+    return if node.nil?
+    inorder(node.left)    
+    puts node.data
+    inorder(node.right)
   end
 end
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
-test.preorder {|elem| puts "Node value: #{elem.data + 10}" }
-
-# test.level_order { |elem| puts elem.data}
-# test.find(7)
-
-# test.insert(test.root, 10)
-
-# p test.arr.length
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
 # test.pretty_print
-# puts test.root.right.data.min
+test.inorder
