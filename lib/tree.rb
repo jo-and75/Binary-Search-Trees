@@ -73,19 +73,18 @@ class Tree
   end
 
   def find(value, node = @root)
-    current_node = node
-    return nil if current_node.nil?
+    return nil if node.nil?
 
-    until current_node.data == value
-      current_node = current_node.right if value > current_node.data
-      current_node = current_node.left if value < current_node.data 
+    until node.data == value
+      node = node.right if value > node.data
+      node = node.left if value < node.data
 
-      if current_node.left.nil? && current_node.right.nil?   
-        puts "Does not exist." if current_node.data != value
-        break   
+      if node.left.nil? && node.right.nil?
+        puts 'Does not exist.' if node.data != value
+        break
       end
     end
-    puts current_node if current_node.data == value
+    puts node if node.data == value
   end
 
   def level_order(node = @root, queue = [])
@@ -127,17 +126,17 @@ class Tree
   def postorder(node = @root, &block)
     return if node.nil?
 
-    postorder(node.left, &block) 
-    postorder(node.right, &block)  
-    if block_given? 
-      yield(node) 
-    else 
-      puts node.data 
+    postorder(node.left, &block)
+    postorder(node.right, &block)
+    if block_given?
+      yield(node)
+    else
+      puts node.data
     end
-  end 
+  end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
-test.pretty_print 
-test.find(6)
+test.pretty_print
+test.find(5)
 # test.postorder { |elem| puts elem.data * 10 }
