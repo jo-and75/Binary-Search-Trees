@@ -78,9 +78,14 @@ class Tree
 
     until current_node.data == value
       current_node = current_node.right if value > current_node.data
-      current_node = current_node.left if value < current_node.data
+      current_node = current_node.left if value < current_node.data 
+
+      if current_node.left.nil? && current_node.right.nil?   
+        puts "Does not exist." if current_node.data != value
+        break   
+      end
     end
-    puts current_node
+    puts current_node if current_node.data == value
   end
 
   def level_order(node = @root, queue = [])
@@ -129,9 +134,10 @@ class Tree
     else 
       puts node.data 
     end
-  end
+  end 
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
-test.pretty_print
-test.postorder { |elem| puts elem.data * 10 }
+test.pretty_print 
+test.find(6)
+# test.postorder { |elem| puts elem.data * 10 }
