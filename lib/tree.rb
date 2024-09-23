@@ -74,17 +74,13 @@ class Tree
 
   def find(value, node = @root)
     return nil if node.nil?
+    return node if node.data == value
 
-    until node.data == value
-      node = node.right if value > node.data
-      node = node.left if value < node.data
-
-      if node.left.nil? && node.right.nil?
-        puts 'Does not exist.' if node.data != value
-        break
-      end
+    if value < node.data
+      find(value, node.left)
+    else
+      find(value, node.right)
     end
-    puts node if node.data == value
   end
 
   def level_order(node = @root, queue = [])
@@ -111,16 +107,9 @@ class Tree
     preorder(node.left, results, &block)
     preorder(node.right, results, &block) 
 
-   return results if node != root #ensures that no intermediate print happens during recursion.
+   return results if node != @root #ensures that no intermediate print happens during recursion.
    puts results
   end 
-
-  def height(node) 
-    results_left = []
-    current_node = find(node) 
-    results_left  = preorder(current_node) 
-  p results_left
-  end
 
   def inorder(node = @root, &block)
     return if node.nil?
@@ -144,10 +133,20 @@ class Tree
     else
       puts node.data
     end
+  end 
+
+
+  def height(node)
+    return -1 if node.nil?
+  
+    left_height = height(node.left)
+    right_height = height(node.right)
+  
+    return [left_height, right_height].max + 1
   end
 end
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
-test.pretty_print  
-# test.height(5)
-test.preorder
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
+test.pretty_print
+puts test.height(test.find(7))
+# puts test.root.data
