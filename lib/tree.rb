@@ -143,10 +143,22 @@ class Tree
     right_height = height(node.right)
   
     return [left_height, right_height].max + 1
+  end 
+
+  def depth(value, dist = 0,current_node = @root) 
+    return if current_node.nil?  
+    return dist if value == current_node.data 
+
+    if value > current_node.data 
+      depth(value, dist + 1,current_node.right) 
+    else  
+      depth(value,dist + 1, current_node.left)  
+    end
+
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
 test.pretty_print
-puts test.height(test.find(7))
+puts test.depth(2)
 # puts test.root.data
