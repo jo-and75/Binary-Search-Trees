@@ -146,7 +146,7 @@ class Tree
   end 
 
   def depth(value, dist = 0,current_node = @root) 
-    return if current_node.nil?  
+    return -1 if current_node.nil?  
     return dist if value == current_node.data 
 
     if value > current_node.data 
@@ -160,5 +160,5 @@ end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
 test.pretty_print
-puts test.depth(2)
+puts test.depth(9)
 # puts test.root.data
