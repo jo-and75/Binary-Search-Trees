@@ -99,16 +99,27 @@ class Tree
     end
   end
 
-  def preorder(node = @root, &block)
+  def preorder(node = @root, results = [], &block) 
+    
     return if node.nil?
 
     if block_given?
       yield(node)
     else
-      puts node.data
+      results << node.data 
     end
-    preorder(node.left, &block)
-    preorder(node.right, &block)
+    preorder(node.left, results, &block)
+    preorder(node.right, results, &block) 
+
+   return results if node != root #ensures that no intermediate print happens during recursion.
+   puts results
+  end 
+
+  def height(node) 
+    results_left = []
+    current_node = find(node) 
+    results_left  = preorder(current_node) 
+  p results_left
   end
 
   def inorder(node = @root, &block)
@@ -137,6 +148,6 @@ class Tree
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])
-test.pretty_print
-test.find(5)
-# test.postorder { |elem| puts elem.data * 10 }
+test.pretty_print  
+# test.height(5)
+test.preorder
