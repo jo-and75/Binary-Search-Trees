@@ -36,7 +36,7 @@ class Tree
     root
   end
 
-  def delete(root, value)
+  def delete(value, root = @root)
     parent = nil
     node = root
 
@@ -95,21 +95,20 @@ class Tree
     end
   end
 
-  def preorder(node = @root, results = [], &block) 
-    
+  def preorder(node = @root, results = [], &block)
     return if node.nil?
 
     if block_given?
       yield(node)
     else
-      results << node.data 
+      results << node.data
     end
     preorder(node.left, results, &block)
-    preorder(node.right, results, &block) 
+    preorder(node.right, results, &block)
 
-   return results if node != @root #ensures that no intermediate print happens during recursion.
-   puts results
-  end 
+    results  # ensures that no intermediate print happens during recursion.
+
+  end
 
   def inorder(node = @root, &block)
     return if node.nil?
@@ -133,28 +132,52 @@ class Tree
     else
       puts node.data
     end
-  end 
-
+  end
 
   def height(node)
-    return -1 if node.nil?
-  
+    puts "Calculating height for node: #{node&.data}, object_id: #{node&.object_id}"
+    if node.nil?
+      puts "Warning: Attempted to calculate height of nil node"
+      return -1
+    end
+
     left_height = height(node.left)
-    right_height = height(node.right)
-  
-    return [left_height, right_height].max + 1
+    right_height = height(node.right)  
+
+    result = [left_height, right_height].max + 1
+    puts "Height for node #{node.data}: #{result}"
+    return result
+
+    # return false if (left_height - right_height).abs <= 1
+  end
+
+  def depth(value, dist = 0, current_node = @root)
+    return -1 if current_node.nil?
+    return dist if value == current_node.data
+
+    return depth(value, dist + 1, current_node.right) if value > current_node.data
+
+    depth(value, dist + 1, current_node.left) if value < current_node.data
   end 
 
-  def depth(value, dist = 0,current_node = @root) 
-    return -1 if current_node.nil?  
-    return dist if value == current_node.data 
 
-    return depth(value, dist + 1,current_node.right) if value > current_node.data 
-    return depth(value,dist + 1, current_node.left)  if value < current_node.data  
+  def balanced?(node = @root)  
+    if height(node) == false 
+      puts "Tree is not balanced" 
+    else 
+      puts "Tree is balanced" 
+    end 
+    # pretty_print
   end
 end
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9]) 
-test.pretty_print
-puts test.depth(18)
+test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
+# test.delete(1) 
+test.pretty_print  
+puts test.height(@root) 
+# puts test.find(5) 
+puts test.root
+# puts test.balanced?
+# test.preorder
+# puts test.depth(9)
 # puts test.root.data
