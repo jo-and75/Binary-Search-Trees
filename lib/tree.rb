@@ -11,7 +11,8 @@ class Tree
   def build_tree(arr, start = 0, finish = arr.length - 1)
     return if start > finish
 
-    mid = (start + finish) / 2
+    mid = (start + finish) / 2  
+    # puts arr[mid]
     root_node = Node.new(arr[mid])
 
     root_node.left = build_tree(arr, start, mid - 1)
@@ -95,43 +96,43 @@ class Tree
     end
   end
 
-  def preorder(node = @root, results = [], &block)
+  def preorder(node = @root, &block)
     return if node.nil?
 
     if block_given?
       yield(node)
     else
-      results << node.data
+      puts node.data 
     end
-    preorder(node.left, results, &block)
-    preorder(node.right, results, &block)
-
-    p results  # ensures that no intermediate print happens during recursion.
+    preorder(node.left, &block)
+    preorder(node.right,&block)
 
   end
 
-  def inorder(node = @root, &block)
-    return if node.nil?
+  def inorder(node = @root, result = [], &block)
+    return result if node.nil?
 
-    inorder(node.left, &block)
+    inorder(node.left, result, &block)
     if block_given?
       yield(node)
     else
-      puts node.data
+      result << node.data
     end
-    inorder(node.right, &block)
+    inorder(node.right, result, &block)
+
+    return result unless block_given?
   end
 
   def postorder(node = @root, &block)
     return if node.nil?
 
     postorder(node.left, &block)
-    postorder(node.right, &block)
+    postorder(node.right, &block) 
     if block_given?
       yield(node)
-    else
+    else 
       puts node.data
-    end
+    end 
   end
 
   def height(node)
@@ -165,18 +166,15 @@ class Tree
   end 
 
   def rebalance 
-    if balanced?
+    if !balanced?(@root) 
+      temp_arr = inorder 
+      @root = build_tree(temp_arr) 
+    end
   end
-end
+end 
 
-test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
-# test.delete(1) 
-test.pretty_print  
-puts test.balanced? 
-puts test.preorder
-# puts test.find(5) 
-# puts test.root
-# puts test.balanced?
-# test.preorder
-# puts test.depth(9)
-# puts test.root.data
+test = Tree.new( (Array.new(15) { rand(1..100) }).sort  )  
+# test.delete(1)  
+# test.rebalance 
+test.pretty_print
+
