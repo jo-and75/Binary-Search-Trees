@@ -26,13 +26,13 @@ class Tree
     pretty_print(node.left, "#{prefix}#{is_left ? '    ' : '│   '}", true) if node.left
   end
 
-  def insert(root, value)
+  def insert(value,root = @root)
     if root.nil?
       root = Node.new(value)
     elsif value < root.data
-      root.left = insert(root.left, value)
+      root.left = insert(value,root.left)
     elsif value > root.data
-      root.right = insert(root.right, value)
+      root.right = insert(value,root.right)
     end
     root
   end
@@ -91,7 +91,11 @@ class Tree
 
       queue.push(queue[0].left) unless queue[0].left.nil?
       queue.push(queue[0].right) unless queue[0].right.nil?
-      yield(queue[0]) if block_given?
+       if block_given? 
+        yield(queue[0].data) 
+       else 
+        puts queue[0].data 
+       end
       queue.shift
     end
   end
@@ -173,8 +177,20 @@ class Tree
   end
 end 
 
-test = Tree.new( (Array.new(15) { rand(1..100) }).sort  )  
-# test.delete(1)  
-# test.rebalance 
-test.pretty_print
+test = Tree.new( (Array.new(15) { rand(1..100) }).sort  )    
+# test.rebalance  
+test.insert(310) 
+test.insert(345) 
+test.insert(890) 
+test.insert(750) 
+test.insert(132) 
+test.insert(190) 
+test.insert(810) 
+test.pretty_print 
+puts test.balanced? 
+test.rebalance 
+test.pretty_print 
+puts test.balanced? 
+puts test.level_order {|n| puts n*0}
+ 
 
