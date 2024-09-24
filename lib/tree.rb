@@ -134,21 +134,12 @@ class Tree
     end
   end
 
-  def height(node)
-    puts "Calculating height for node: #{node&.data}, object_id: #{node&.object_id}"
-    if node.nil?
-      puts "Warning: Attempted to calculate height of nil node"
-      return -1
-    end
-
+  def height(node, balance_check = [])
+    return -1 if node.nil?
     left_height = height(node.left)
-    right_height = height(node.right)  
+    right_height = height(node.right)   
 
-    result = [left_height, right_height].max + 1
-    puts "Height for node #{node.data}: #{result}"
-    return result
-
-    # return false if (left_height - right_height).abs <= 1
+    [left_height, right_height].max + 1    
   end
 
   def depth(value, dist = 0, current_node = @root)
@@ -160,23 +151,26 @@ class Tree
     depth(value, dist + 1, current_node.left) if value < current_node.data
   end 
 
-
   def balanced?(node = @root)  
-    if height(node) == false 
-      puts "Tree is not balanced" 
-    else 
-      puts "Tree is balanced" 
-    end 
-    # pretty_print
+    return true if node.nil? 
+
+    left_height = height(node.left)
+    right_height = height(node.right)  
+    
+    if (left_height - right_height).abs <= 1 && balanced?(node.left) && balanced?(node.right)
+      true
+    else
+      false
+    end
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
 # test.delete(1) 
 test.pretty_print  
-puts test.height(@root) 
+puts test.balanced?
 # puts test.find(5) 
-puts test.root
+# puts test.root
 # puts test.balanced?
 # test.preorder
 # puts test.depth(9)
