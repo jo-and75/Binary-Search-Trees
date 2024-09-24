@@ -106,7 +106,7 @@ class Tree
     preorder(node.left, results, &block)
     preorder(node.right, results, &block)
 
-    results  # ensures that no intermediate print happens during recursion.
+    p results  # ensures that no intermediate print happens during recursion.
 
   end
 
@@ -134,7 +134,7 @@ class Tree
     end
   end
 
-  def height(node, balance_check = [])
+  def height(node)
     return -1 if node.nil?
     left_height = height(node.left)
     right_height = height(node.right)   
@@ -162,13 +162,18 @@ class Tree
     else
       false
     end
+  end 
+
+  def rebalance 
+    if balanced?
   end
 end
 
 test = Tree.new([1, 2, 3, 4, 5, 6, 7, 8, 9])  
 # test.delete(1) 
 test.pretty_print  
-puts test.balanced?
+puts test.balanced? 
+puts test.preorder
 # puts test.find(5) 
 # puts test.root
 # puts test.balanced?
